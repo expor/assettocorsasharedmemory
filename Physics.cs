@@ -34,102 +34,147 @@ namespace AssettoCorsaSharedMemory
         public float Brake;
         public float Fuel;
         public int Gear;
-        public int Rpms;
+        public int Rpm;
         public float SteerAngle;
         public float SpeedKmh;
 
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] Velocity;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] AccG;
+        public float[] AccelerationG;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public float[] WheelSlip;
+
+        // UNUSED
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] WheelLoad;
+        public float[] unused_WheelLoad;
+
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public float[] WheelsPressure;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public float[] WheelAngularSpeed;
+
+        // UNUSED
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreWear;
+        public float[] unused_TyreWear;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreDirtyLevel;
+        public float[] unused_TyreDirtyLevel;
+
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public float[] TyreCoreTemperature;
+
+        // UNUSED
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] CamberRad;
+        public float[] unused_CamberRad;
+
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public float[] SuspensionTravel;
 
-        public float Drs;
-        public float TC;
+        // UNUSED
+        public float unused_Drs;
+
+        public float TCActive;
         public float Heading;
         public float Pitch;
         public float Roll;
-        public float CgHeight;
+
+        // UNUSED
+        public float unused_CgHeight;
 
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 5)]
         public float[] CarDamage;
 
-        public int NumberOfTyresOut;
+        // UNUSED
+        public int unused_NumberOfTyresOut;
+
         public int PitLimiterOn;
-        public float Abs;
+        public float ABSActive;
 
-        public float KersCharge;
-        public float KersInput;
+        // UNUSED
+        public float unused_KersCharge;
+        public float unused_KersInput;
+
         public int AutoShifterOn;
+
+        // UNUSED
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 2)]
-        public float[] RideHeight;
+        public float[] unused_RideHeight;
 
-        // since 1.5
         public float TurboBoost;
-        public float Ballast;
-        public float AirDensity;
+        
+        // UNUSED
+        public float unused_Ballast;
+        public float unused_AirDensity;
 
-        // since 1.6
         public float AirTemp;
         public float RoadTemp;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] LocalAngularVelocity;
         public float FinalFF;
 
-        // since 1.7
-        public float PerformanceMeter;
-        public int EngineBrake;
-        public int ErsRecoveryLevel;
-        public int ErsPowerLevel;
-        public int ErsHeatCharging;
-        public int ErsisCharging;
-        public float KersCurrentKJ;
-        public int DrsAvailable;
-        public int DrsEnabled;
+        // UNUSED
+        public float unused_PerformanceMeter;
+        public int unused_EngineBrake;
+        public int unused_ErsRecoveryLevel;
+        public int unused_ErsPowerLevel;
+        public int unused_ErsHeatCharging;
+        public int unused_ErsisCharging;
+        public float unused_KersCurrentKJ;
+        public int unused_DrsAvailable;
+        public int unused_DrsEnabled;
+
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public float[] BrakeTemp;
-
-        // since 1.10
         public float Clutch;
 
+        // UNUSED
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreTempI;
+        public float[] unused_TyreTempI;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreTempM;
+        public float[] unused_TyreTempM;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
-        public float[] TyreTempO;
+        public float[] unused_TyreTempO;
 
-        // since 1.10.2
         public int IsAIControlled;
-
-        // since 1.11
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public Coordinates[] TyreContactPoint;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public Coordinates[] TyreContactNormal;
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 4)]
         public Coordinates[] TyreContactHeading;
-        public float BrakeBias;
-
-        // since 1.12
+        public float BrakeBias; // TODO: Dash offset, how does it affect?
         [MarshalAs (UnmanagedType.ByValArray, SizeConst = 3)]
         public float[] LocalVelocity;
+
+        // UNUSED
+        public int unused_P2PActivation;
+        public int unused_P2PStatus;
+        public float unused_CurrentMaxRpm;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] unused_mz;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] unused_fx;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] unused_fy;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] unused_SlipRatio;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] unused_SlipAngle;
+        public int unused_TCInAction;
+        public int unused_ABSInAction;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] unused_SuspensionDamage;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] unused_TyreTemperature;
+
+        public float WaterTemperature;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] BrakePressure;
+        public int FrontBrakeCompound;
+        public int rearBrakeCompound;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] BrakePadLife;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public float[] BrakeDiscLife;
     }
 }

@@ -28,48 +28,45 @@ namespace AssettoCorsaSharedMemory
 
     public class AssettoCorsa
     {
-        private Timer sharedMemoryRetryTimer;
+        private readonly Timer sharedMemoryRetryTimer;
         private AC_MEMORY_STATUS memoryStatus = AC_MEMORY_STATUS.DISCONNECTED;
         public bool IsRunning { get { return (memoryStatus == AC_MEMORY_STATUS.CONNECTED); } }
 
-        private AC_STATUS gameStatus = AC_STATUS.AC_OFF;
+        private ACC_STATUS gameStatus = ACC_STATUS.OFF;
 
         public event GameStatusChangedHandler GameStatusChanged;
         public virtual void OnGameStatusChanged(GameStatusEventArgs e)
         {
-            if (GameStatusChanged != null)
-            {
-                GameStatusChanged(this, e);
-            }
+            GameStatusChanged?.Invoke(this, e);
         }
 
-        public static readonly Dictionary<AC_STATUS, string> StatusNameLookup = new Dictionary<AC_STATUS, string>
+        public static readonly Dictionary<ACC_STATUS, string> StatusNameLookup = new Dictionary<ACC_STATUS, string>
         {
-            { AC_STATUS.AC_OFF, "Off" },
-            { AC_STATUS.AC_LIVE, "Live" },
-            { AC_STATUS.AC_PAUSE, "Pause" },
-            { AC_STATUS.AC_REPLAY, "Replay" },
+            { ACC_STATUS.OFF, "Off" },
+            { ACC_STATUS.LIVE, "Live" },
+            { ACC_STATUS.PAUSE, "Pause" },
+            { ACC_STATUS.REPLAY, "Replay" },
         };
 
         public AssettoCorsa()
         {
             sharedMemoryRetryTimer = new Timer(2000);
             sharedMemoryRetryTimer.AutoReset = true;
-            sharedMemoryRetryTimer.Elapsed += sharedMemoryRetryTimer_Elapsed;
+            sharedMemoryRetryTimer.Elapsed += SharedMemoryRetryTimerElapsed;
 
             physicsTimer = new Timer();
             physicsTimer.AutoReset = true;
-            physicsTimer.Elapsed += physicsTimer_Elapsed;
+            physicsTimer.Elapsed += PhysicsTimerElapsed;
             PhysicsInterval = 10;
 
             graphicsTimer = new Timer();
             graphicsTimer.AutoReset = true;
-            graphicsTimer.Elapsed += graphicsTimer_Elapsed;
+            graphicsTimer.Elapsed += GraphicsTimerElapsed;
             GraphicsInterval = 1000;
 
             staticInfoTimer = new Timer();
             staticInfoTimer.AutoReset = true;
-            staticInfoTimer.Elapsed += staticInfoTimer_Elapsed;
+            staticInfoTimer.Elapsed += StaticInfoTimerElapsed;
             StaticInfoInterval = 1000;
 
             Stop();
@@ -80,10 +77,11 @@ namespace AssettoCorsaSharedMemory
         /// </summary>
         public void Start()
         {
+            SharedMemoryRetryTimerElapsed(this, null);
             sharedMemoryRetryTimer.Start();
         }
 
-        void sharedMemoryRetryTimer_Elapsed(object sender, ElapsedEventArgs e)
+        void SharedMemoryRetryTimerElapsed(object sender, ElapsedEventArgs e)
         {
             ConnectToSharedMemory();
         }
@@ -185,9 +183,9 @@ namespace AssettoCorsaSharedMemory
         MemoryMappedFile graphicsMMF;
         MemoryMappedFile staticInfoMMF;
 
-        Timer physicsTimer;
-        Timer graphicsTimer;
-        Timer staticInfoTimer;
+        readonly Timer physicsTimer;
+        readonly Timer graphicsTimer;
+        readonly Timer staticInfoTimer;
 
         /// <summary>
         /// Represents the method that will handle the physics update events
@@ -206,44 +204,36 @@ namespace AssettoCorsaSharedMemory
 
         public virtual void OnPhysicsUpdated(PhysicsEventArgs e)
         {
-            if (PhysicsUpdated != null)
-            {
-                PhysicsUpdated(this, e);
-            }
+            PhysicsUpdated?.Invoke(this, e);
         }
 
         public virtual void OnGraphicsUpdated(GraphicsEventArgs e)
         {
-            if (GraphicsUpdated != null)
+            GraphicsUpdated?.Invoke(this, e);
+
+            if (gameStatus != e.Graphics.Status)
             {
-                GraphicsUpdated(this, e);
-                if (gameStatus != e.Graphics.Status)
-                {
-                    gameStatus = e.Graphics.Status;
-                    GameStatusChanged(this, new GameStatusEventArgs(gameStatus));
-                }
+                gameStatus = e.Graphics.Status;
+                OnGameStatusChanged(new GameStatusEventArgs(gameStatus));
             }
         }
 
         public virtual void OnStaticInfoUpdated(StaticInfoEventArgs e)
         {
-            if (StaticInfoUpdated != null)
-            {
-                StaticInfoUpdated(this, e);
-            }
+            StaticInfoUpdated?.Invoke(this, e);
         }
 
-        private void physicsTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void PhysicsTimerElapsed(object sender, ElapsedEventArgs e)
         {
             ProcessPhysics();
         }
 
-        private void graphicsTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void GraphicsTimerElapsed(object sender, ElapsedEventArgs e)
         {
             ProcessGraphics();
         }
 
-        private void staticInfoTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void StaticInfoTimerElapsed(object sender, ElapsedEventArgs e)
         {
             ProcessStaticInfo();
         }

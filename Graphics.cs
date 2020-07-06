@@ -7,35 +7,65 @@ using System.Threading.Tasks;
 
 namespace AssettoCorsaSharedMemory
 {
-    public enum AC_FLAG_TYPE
+    public enum ACC_FLAG_TYPE
     {
-        AC_NO_FLAG = 0,
-        AC_BLUE_FLAG = 1,
-        AC_YELLOW_FLAG = 2,
-        AC_BLACK_FLAG = 3,
-        AC_WHITE_FLAG = 4,
-        AC_CHECKERED_FLAG = 5,
-        AC_PENALTY_FLAG = 6
+        NO_FLAG,
+        BLUE_FLAG,
+        YELLOW_FLAG,
+        BLACK_FLAG,
+        WHITE_FLAG,
+        CHECKERED_FLAG,
+        PENALTY_FLAG,
+        GREEN_FLAG,
+        ORANGE_FLAG
     }
 
-    public enum AC_STATUS
+    public enum ACC_PENALTY_TYPE
     {
-        AC_OFF = 0,
-        AC_REPLAY = 1,
-        AC_LIVE = 2,
-        AC_PAUSE = 3
+        None,
+        DriveThrough_Cutting,
+        StopAndGo_10_Cutting,
+        StopAndGo_20_Cutting,
+        StopAndGo_30_Cutting,
+        Disqualified_Cutting,
+        RemoveBestLaptime_Cutting,
+        DriveThrough_PitSpeeding,
+        StopAndGo_10_PitSpeeding,
+        StopAndGo_20_PitSpeeding,
+        StopAndGo_30_PitSpeeding,
+        Disqualified_PitSpeeding,
+        RemoveBestLaptime_PitSpeeding,
+        Disqualified_IgnoredMandatoryPit,
+        PostRaceTime,
+        Disqualified_Trolling,
+        Disqualified_PitEntry,
+        Disqualified_PitExit,
+        Disqualified_WrongWay,
+        DriveThrough_IgnoredDriverStint,
+        Disqualified_IgnoredDriverSting,
+        Disqualified_ExceededDriverStintLimit
     }
 
-    public enum AC_SESSION_TYPE
+    public enum ACC_STATUS
     {
-        AC_UNKNOWN = -1,
-        AC_PRACTICE = 0,
-        AC_QUALIFY = 1,
-        AC_RACE = 2,
-        AC_HOTLAP = 3,
-        AC_TIME_ATTACK = 4,
-        AC_DRIFT = 5,
-        AC_DRAG = 6
+        OFF,
+        REPLAY,
+        LIVE,
+        PAUSE
+    }
+
+    public enum ACC_SESSION_TYPE
+    {
+        UNKNOWN = -1,
+        PRACTICE,
+        QUALIFY,
+        RACE,
+        HOTLAP,
+        TIME_ATTACK,
+        DRIFT,
+        DRAG,
+        HOTSTINT,
+        HOTSTINTSUPERPOLE
     }
 
     public class GraphicsEventArgs : EventArgs
@@ -53,8 +83,8 @@ namespace AssettoCorsaSharedMemory
     public struct Graphics
     {
         public int PacketId;
-        public AC_STATUS Status;
-        public AC_SESSION_TYPE Session;
+        public ACC_STATUS Status;
+        public ACC_SESSION_TYPE Session;
         [MarshalAs (UnmanagedType.ByValTStr, SizeConst = 15)]
         public String CurrentTime;
         [MarshalAs (UnmanagedType.ByValTStr, SizeConst = 15)]
@@ -77,20 +107,57 @@ namespace AssettoCorsaSharedMemory
         [MarshalAs (UnmanagedType.ByValTStr, SizeConst = 33)]
         public String TyreCompound;
 
-        public float ReplayTimeMultiplier;
+        // UNUSED
+        public float unused_ReplayTimeMultiplier;
+
         public float NormalizedCarPosition;
-        [MarshalAs (UnmanagedType.ByValArray, SizeConst = 3)]
-        public float[] CarCoordinates;
-
+        public int ActiveCars;
+        [MarshalAs (UnmanagedType.ByValArray, SizeConst = 60)]
+        public Coordinates[] CarCoordinates;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
+        public int[] CarIdList;
+        public int playerCarId;
         public float PenaltyTime;
-        public AC_FLAG_TYPE Flag;
+        public ACC_FLAG_TYPE Flag;
+        public ACC_PENALTY_TYPE Penalty;
         public int IdealLineOn;
-
-        // since 1.5
         public int IsInPitLane;
         public float SurfaceGrip;
-    
-        // since 1.13
         public int MandatoryPitDone;
+
+        public float WindSpeed;
+        public float WindDirection;
+        public int IsSetupMenuVisible;
+        public int MainDisplayIndex;
+        public int SecondaryDisplayIndex;
+        public int TC1;
+        public int TC2;
+        public int EngineMap;
+        public int ABS;
+        public float FuelPerLap;
+        public int RainLights;
+        public int FlashingLights;
+        public int LightStage;
+        public float ExhaustTemperature;
+        public int WiperMode;
+        public int DriverStintTotalTimeLeft;
+        public int DriverStintTimeLeft;
+        public int RainTyres;
+        public int SessionIndex;
+        public float UsedFuel;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public String DeltaLapTimeString;
+        public int DeltaLapTimeMs;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public String EstimatedLapTimeString;
+        public int EstimatedLapTimeMs;
+        public int IsDeltaPositive;
+        public int LastSplitMs;
+        public int IsValidLap;
+        public float FuelEstimatedLaps;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public String TrackStatus;
+        public int MissingMandatoryPits;
+        public float Clock;
     }
 }
